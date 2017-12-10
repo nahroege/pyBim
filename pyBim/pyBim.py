@@ -120,11 +120,3 @@ class pyBim:
             with open(dest+item['name']+'.png', 'wb') as image:
                 for chunk in request:
                     image.write(chunk)
-
-bim = pyBim()
-bim.aktuelUrunler_date()
-print(bim.aktuelUrunler_get())
-bim.aktuelUrunler_parse()
-bim.aktuelUrun_search('tobl')
-print(bim.aktuelUrun_random()['img'])
-bim.aktuelUrun_dl(bim.aktuelUrun_random(), '../img/')
