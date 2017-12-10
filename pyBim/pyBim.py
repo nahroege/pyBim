@@ -120,8 +120,10 @@ class pyBim:
             with open(dest+item['name']+'.png', 'wb') as image:
                 for chunk in request:
                     image.write(chunk)
+            return dest+item['name']+'.png'
 
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
 bim.aktuelUrunler_get()
-print(bim.slugify('Toptan fiyatına perâkende satış'))
+bim.aktuelUrunler_parse()
+print(bim.aktuelUrun_dl(bim.aktuelUrun_random(),'../img/'))
