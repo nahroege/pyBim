@@ -278,7 +278,7 @@ Result:
 ### Download Specific Product Image
 
 Usage:
-```
+```python
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
 bim.aktuelUrunler_get()
