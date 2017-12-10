@@ -24,6 +24,7 @@ Define header in this section (default):
 ```python
 self.headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64)'}
 ```
+
 Define Bim Website URL (default):
 ```python
 self.bim_base = 'http://www.bim.com.tr'
@@ -53,28 +54,36 @@ self.nothing = ''
 
 In search section we need slugify the keyword so we define a function for slugifying text.
 
+Usage:
 ```python
 bim = pyBim()
-bim.slugify('slug me pls')
+bim.slugify('Toptan fiyatına perâkende satış')
 ```
 
+Result:
+```shell
+toptan-fiyatina-perakende-satis
+```
 ### Date
 
 In aktuelUrunler_date function we set date
 
 #### Set Aktuel Date as Last Week
+Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('last_week')
 ```
 
 #### Set Aktuel Date as This Week
+Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
 ```
 
 #### Set Aktuel Date as Next Week
+Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('next_week')
@@ -84,6 +93,7 @@ bim.aktuelUrunler_date('next_week')
 
 In date function we define the Aktuel's date, now we get Aktuel's Page of spesific date
 
+Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
@@ -107,6 +117,7 @@ bim.aktuelUrunler_get()
 ```
 
 #### Array's Object 0 - Total Product Amount
+Usage:
 ```python
 print(bim.aktuelUrunler_parse()[0])
 ```
@@ -117,6 +128,7 @@ Result:
 ```
 
 #### Array's Object 1 - Slugified Product Names
+Usage:
 ```python
 print(bim.aktuelUrunler_parse()[1])
 ```
@@ -127,6 +139,7 @@ Result:
 ```
 
 #### Array's Object 2 - Full Product URL's
+Usage:
 ```python
 print(bim.aktuelUrunler_parse()[2])
 ```
@@ -138,6 +151,8 @@ Result:
 
 ### Parsing Specific Product with All Info  from URL
 In aktuelUrun_parse function we must send a url for parsing product data 
+
+Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
@@ -149,3 +164,5 @@ Result:
 ```shell
 {'price': '3,50', 'name': 'Sütlü Fındıklı  Çikolata  Nestle 70 g', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_NESTLE FINDIK.png', 'desc': '\xa0%25 fındıklı\n'}
 ```
+
+### Random Bim Product from Aktuel
