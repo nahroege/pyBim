@@ -15,18 +15,18 @@ class pyBim:
         self.keylink = self.aktuel_base+'?Bim_AktuelTarihKey='
         self.aktuel_urun = self.bim_base+'/aktuel-urunler/'
         self.nothing = ''
-        
+
     def slugify(self,text):
         text = unidecode(text).lower()
         return re.sub(r'\W+', '-', text)
-    
+
     def aktuelUrunler_date(self,date='this_week'):
         if date is 'last_week' or date is 'this_week' or date is 'next_week':
             self.date = date
             return True
         else:
             raise Exception('Bimodule.aktuel()\'s date can take only 3 diffrent params. \n Param 1: this_week (or leave empty) \n Param 2: next_week \n Param 3: last_week')
-            
+
     def aktuelUrunler_get(self):
         keys = []
         hrefs = []
@@ -54,7 +54,7 @@ class pyBim:
         else:
             raise Exception('Unknown Date Format.')
         return self.url
-        
+
     def aktuelUrunler_parse(self):
         fullitem = []
         slugitem = []
@@ -69,7 +69,7 @@ class pyBim:
         self.slugitem = slugitem
         self.fullitem = fullitem
         return matchNum,slugitem,fullitem
-        
+
     def aktuelUrun_parse(self,full):
         item = {}
         raw_data = get(full, headers=self.headers)
@@ -82,7 +82,7 @@ class pyBim:
         for i in rawdesc.select('li'):
             item['desc'] += i.text + '\n'
         return item
-        
+
     def aktuelUrun_random(self,amount=1):
         if amount is 1:
             rand = randint(0,self.total_item)
@@ -112,11 +112,19 @@ class pyBim:
                 result.append(i)
             elif i.endswith(keyword):
                 result.append(i)
-            else:
         return result
         
+    def aktuelUrun_dl(self,item,dest):
+        request = get(item['img'], stream=True)
+        if request.status_code == 200:
+            with open(dest+item['name']+'.png', 'wb') as image:
+                for chunk in request:
+                    image.write(chunk)
+
 bim = pyBim()
 bim.aktuelUrunler_date()
-bim.aktuelUrunler_get()
+print(bim.aktuelUrunler_get())
 bim.aktuelUrunler_parse()
 bim.aktuelUrun_search('tobl')
+print(bim.aktuelUrun_random()['img'])
+bim.aktuelUrun_dl(bim.aktuelUrun_random(), '../img/')
