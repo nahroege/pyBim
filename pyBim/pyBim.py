@@ -23,7 +23,7 @@ class pyBim:
     def aktuelUrunler_date(self,date='this_week'):
         if date is 'last_week' or date is 'this_week' or date is 'next_week':
             self.date = date
-            return True
+            return date
         else:
             raise Exception('Bimodule.aktuel()\'s date can take only 3 diffrent params. \n Param 1: this_week (or leave empty) \n Param 2: next_week \n Param 3: last_week')
 
@@ -120,3 +120,8 @@ class pyBim:
             with open(dest+item['name']+'.png', 'wb') as image:
                 for chunk in request:
                     image.write(chunk)
+
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+print(bim.slugify('Toptan fiyatına perâkende satış'))
