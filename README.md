@@ -75,11 +75,29 @@ bim = pyBim()
 bim.aktuelUrunler_date('last_week')
 ```
 
+Result:
+```shell
+last_week
+```
+
 #### Set Aktuel Date as This Week
-Usage:
+Usage 1 (Leave Empty):
 ```python
 bim = pyBim()
-bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_date()
+```
+
+or
+
+Usage 2:
+```python
+bim = pyBim()
+bim.aktuelUrunler_date()
+```
+
+Result:
+```shell
+this_week
 ```
 
 #### Set Aktuel Date as Next Week
@@ -87,6 +105,31 @@ Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('next_week')
+```
+
+Result:
+```shell
+next_week
+```
+#### Exception: Set Aktuel Date as Something other than these
+Usage:
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('somethinglolololololo')
+```
+
+Result:
+
+```python
+Traceback (most recent call last):
+  File "pyBim.py", line 125, in <module>
+    bim.aktuelUrunler_date('somethinglolololololo')
+  File "pyBim.py", line 28, in aktuelUrunler_date
+    raise Exception('Bimodule.aktuel()\'s date can take only 3 diffrent params. \n Param 1: this_week (or leave empty) \n Param 2: next_week \n Param 3: last_week')
+Exception: Bimodule.aktuel()'s date can take only 3 diffrent params. 
+ Param 1: this_week (or leave empty) 
+ Param 2: next_week 
+ Param 3: last_week
 ```
 
 ### Get Aktuel Products Page
@@ -97,7 +140,7 @@ Usage:
 ```python
 bim = pyBim()
 bim.aktuelUrunler_date('this_week')
-url = bim.aktuelUrunler_get()
+bim.aktuelUrunler_get()
 ```
 
 Result:
@@ -166,3 +209,84 @@ Result:
 ```
 
 ### Random Bim Product from Aktuel
+**Note: Random function doesnt give same product twice!**
+#### Usage 1 (Leave Empty):
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse(),
+bim.aktuelUrun_random()
+```
+
+Result:
+```shell
+{'price': '4,95', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_OREO.png', 'desc': '', 'name': 'Oreo 228 g'}
+```
+
+#### Usage 2 (Give Amount):
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse(),
+bim.aktuelUrun_random(5)
+```
+
+Result:
+```shell
+[{'price': '3,50', 'desc': '\xa0%25 fındıklı\n', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_NESTLE FINDIK.png', 'name': 'Sütlü Fındıklı  Çikolata  Nestle 70 g'}, {'price': '5,45', 'desc': 'Fındık aromalı krema dolgulu\nYoğurt krema dolgulu\n', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_SUN BEST.png', 'name': 'Tam Tahıllı Kahvaltılık Bisküvi  Hellema 253 g'}, {'price': '4,95', 'desc': '', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_OREO.png', 'name': 'Oreo 228 g'}, {'price': '7,95', 'desc': 'Bitter çikolata parçacıklı 225 g\nBitter çikolatalı ve kakao 225 g\nMozaik 255 g\n', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_MUFFIN.png', 'name': 'Mini Kekler\xa0 Kuchenmeister'}, {'price': '3,95', 'desc': '\xa0%23 bademli\n', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_NESTLE BADEM.png', 'name': 'Bademli  Beyaz  Çikolata  Nestle  70 g'}]
+```
+
+#### Exception: Give Amount bigger than total products
+**Note: You can get total amount of products with (self.total_item)**
+
+Exception Usage:
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse()
+bim.aktuelUrun_random(15)
+```
+
+Result:
+```python
+Traceback (most recent call last):
+  File "pyBim.py", line 128, in <module>
+    bim.aktuelUrun_random(15)
+  File "pyBim.py", line 106, in aktuelUrun_random
+    raise Exception('Amount can not bigger than total amount of aktuel items.')
+Exception: Amount can not bigger than total amount of aktuel items.
+```
+
+### Search in Aktuel
+Usage:
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse()
+print(bim.aktuelUrun_search('Toblerone 360'))
+```
+
+Result:
+```shell
+['toblerone-360-g']
+```
+
+### Download Specific Product Image
+
+Usage:
+```
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse()
+bim.aktuelUrun_dl(bim.aktuelUrun_random(),'../img/')
+```
+
+Result:
+```shell
+../img/Sütlü Fındıklı  Çikolata  Nestle 70 g.png
+```
