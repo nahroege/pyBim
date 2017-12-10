@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from requests import get
+from random import randint
 import re
 import bs4 
 
@@ -17,6 +18,7 @@ class pyBim:
     def aktuelUrunler_date(self,date='this_week'):
         if date is 'last_week' or date is 'this_week' or date is 'next_week':
             self.date = date
+            return True
         else:
             raise Exception('Bimodule.aktuel()\'s date can take only 3 diffrent params. \n Param 1: this_week (or leave empty) \n Param 2: next_week \n Param 3: last_week')
             
@@ -46,7 +48,8 @@ class pyBim:
             self.url = self.keylink+urls['next_week']
         else:
             raise Exception('Unknown Date Format.')
-    
+        return self.url
+        
     def aktuelUrunler_parse(self):
         fullitem = []
         slugitem = []
@@ -54,13 +57,14 @@ class pyBim:
         regex = r"\"\/aktuel-urunler\/(.*?)\/(.*?)\"><"
         matches = re.finditer(regex, raw_data.text)
         for matchNum, match in enumerate(matches):
-            matchNum = matchNum + 1
             slugitem.append(match.group(1))
             fullitem.append(self.aktuel_urun+match.group(1)+'/'+match.group(2))
+            matchNum = matchNum + 1
         self.total_item = matchNum
         self.slugitem = slugitem
         self.fullitem = fullitem
-    
+        return matchNum,slugitem,fullitem
+        
     def aktuelUrun_parse(self,full):
         item = {}
         raw_data = get(full, headers=self.headers)
@@ -72,11 +76,30 @@ class pyBim:
         rawdesc = soup('div', {"class": "slide-frame-detail"})[0]
         for i in rawdesc.select('li'):
             item['desc'] += i.text + '\n'
-        print(item)
+        return item
         
+    def aktuelUrun_random(self,amount=1):
+        if amount is 1:
+            rand = randint(0,len(self.fullitem))
+            return self.aktuelUrun_parse(self.fullitem[rand])
+        elif amount <= len(self.fullitem):
+            items = []
+            x = 0
+            while x < amount:
+                rand = randint(0,len(self.fullitem))
+                if pyBim.aktuelUrun_parse(self,self.fullitem[rand]) in items:
+                    continue
+                else:
+                    items.append(pyBim.aktuelUrun_parse(self,self.fullitem[rand]))
+                    x += 1
+            return items
+        else:
+            raise Exception('Amount can not bigger than total amount of aktuel items.')
 bim = pyBim()
 bim.aktuelUrunler_date('next_week')
 bim.aktuelUrunler_get()
 bim.aktuelUrunler_parse()
 bim.aktuelUrun_parse('http://www.bim.com.tr/aktuel-urunler/blender-set/kral.aspx')
 
+for i in bim.aktuelUrun_random(15):
+    print(i)
