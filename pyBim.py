@@ -7,6 +7,7 @@ import bs4
 
 class pyBim:
     def __init__(self):
+        self.headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64)'}
         self.bim_base = 'http://www.bim.com.tr'
         self.aktuel_base = self.bim_base+'/Categories/100/aktuel-urunler.aspx'
         self.keylink = self.aktuel_base+'?Bim_AktuelTarihKey='
@@ -23,7 +24,7 @@ class pyBim:
         keys = []
         hrefs = []
         urls = {}
-        raw_data = get(self.aktuel_base)
+        raw_data = get(self.aktuel_base, headers=self.headers)
         soup = bs4.BeautifulSoup(raw_data.text, "lxml")
         afterdiv = soup('div', {"class": "anasayfaaktuelbaslik"})
         hrefs.append(self.bim_base + afterdiv[0].a['href'])
@@ -49,7 +50,7 @@ class pyBim:
     def aktuelUrunler_parse(self):
         fullitem = []
         slugitem = []
-        raw_data = get(self.url)
+        raw_data = get(self.url, headers=self.headers)
         regex = r"\"\/aktuel-urunler\/(.*?)\/(.*?)\"><"
         matches = re.finditer(regex, raw_data.text)
         for matchNum, match in enumerate(matches):
@@ -59,10 +60,23 @@ class pyBim:
         self.total_item = matchNum
         self.slugitem = slugitem
         self.fullitem = fullitem
+    
+    def aktuelUrun_parse(self,full):
+        item = {}
+        raw_data = get(full, headers=self.headers)
+        soup = bs4.BeautifulSoup(raw_data.text, "lxml")
+        item['img'] = self.bim_base+soup('img', {"class": "img-responsive"})[0].get('src')
+        item['name'] = soup('h3')[0].text.strip()
+        item['price'] = soup('button', {"class": "btn btn-danger"})[0].text.strip()
+        item['desc'] = ""
+        rawdesc = soup('div', {"class": "slide-frame-detail"})[0]
+        for i in rawdesc.select('li'):
+            item['desc'] += i.text + '\n'
+        print(item)
         
 bim = pyBim()
 bim.aktuelUrunler_date('next_week')
 bim.aktuelUrunler_get()
 bim.aktuelUrunler_parse()
-print(bim.fullitem)
+bim.aktuelUrun_parse('http://www.bim.com.tr/aktuel-urunler/blender-set/kral.aspx')
 
