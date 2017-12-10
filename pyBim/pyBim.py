@@ -4,7 +4,8 @@
 from requests import get
 from random import randint
 import re
-import bs4 
+import bs4
+from unidecode import unidecode
 
 class pyBim:
     def __init__(self):
@@ -15,6 +16,10 @@ class pyBim:
         self.aktuel_urun = self.bim_base+'/aktuel-urunler/'
         self.nothing = ''
         
+    def slugify(self,text):
+        text = unidecode(text).lower()
+        return re.sub(r'\W+', '-', text)
+    
     def aktuelUrunler_date(self,date='this_week'):
         if date is 'last_week' or date is 'this_week' or date is 'next_week':
             self.date = date
@@ -80,19 +85,38 @@ class pyBim:
         
     def aktuelUrun_random(self,amount=1):
         if amount is 1:
-            rand = randint(0,len(self.fullitem))
+            rand = randint(0,self.total_item)
             return self.aktuelUrun_parse(self.fullitem[rand])
         elif amount <= len(self.fullitem):
             items = []
             x = 0
             while x < amount:
-                rand = randint(0,len(self.fullitem))
-                if pyBim.aktuelUrun_parse(self,self.fullitem[rand]) in items:
+                rand = randint(0,self.total_item)
+                try:
+                    val = pyBim.aktuelUrun_parse(self,self.fullitem[rand])
+                except:
+                    val = pyBim.aktuelUrun_parse(self,self.fullitem[self.total_item - 1])
+                if val in items:
                     continue
                 else:
-                    items.append(pyBim.aktuelUrun_parse(self,self.fullitem[rand]))
+                    items.append(val)
                     x += 1
             return items
         else:
             raise Exception('Amount can not bigger than total amount of aktuel items.')
-            
+    def aktuelUrun_search(self,keyword):
+        result = []
+        keyword = pyBim.slugify(self,keyword)
+        for i in self.slugitem:
+            if i.startswith(keyword):
+                result.append(i)
+            elif i.endswith(keyword):
+                result.append(i)
+            else:
+        return result
+        
+bim = pyBim()
+bim.aktuelUrunler_date()
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse()
+bim.aktuelUrun_search('tobl')
