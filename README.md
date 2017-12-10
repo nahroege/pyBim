@@ -40,7 +40,7 @@ Define Key Link (default):
 self.keylink = self.aktuel_base+'?Bim_AktuelTarihKey='
 ```
 
-Define A Aktuel Product's specific page (default):
+Define A Aktuel Product's specific page URL(default):
 ```python
 self.aktuel_urun = self.bim_base+'/aktuel-urunler/'
 ```
