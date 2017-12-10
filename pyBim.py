@@ -9,6 +9,7 @@ class pyBim:
     def __init__(self):
         self.bim_base = 'http://www.bim.com.tr'
         self.aktuel_base = self.bim_base+'/Categories/100/aktuel-urunler.aspx'
+        self.keylink = self.aktuel_base+'?Bim_AktuelTarihKey='
         self.nothing = ''
         
     def aktuel_date(self,date='this_week'):
@@ -34,19 +35,18 @@ class pyBim:
         keys.sort()
         urls['last_week'] = keys[0]
         urls['this_week'] = keys[1]
-        urls['last_week'] = keys[2]
-        print(keys)
+        urls['next_week'] = keys[2]
         if self.date is 'last_week':
-            self.url = urls['last_week']
+            self.url = self.keylink+urls['last_week']
         elif self.date is 'this_week':
-            self.url = urls['this_week']
-        elif self.date is 'last_week':
-            self.url = urls['last_week']
+            self.url = self.keylink+urls['this_week']
+        elif self.date is 'next_week':
+            self.url = self.keylink+urls['next_week']
         else:
             raise Exception('Unknown Date Format.')
 
 bim = pyBim()
-bim.aktuel_date('last_week')
+bim.aktuel_date('next_week')
 bim.get_aktuel()
-
+print(bim.url)
 
