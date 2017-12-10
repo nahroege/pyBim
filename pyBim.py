@@ -95,11 +95,4 @@ class pyBim:
             return items
         else:
             raise Exception('Amount can not bigger than total amount of aktuel items.')
-bim = pyBim()
-bim.aktuelUrunler_date('next_week')
-bim.aktuelUrunler_get()
-bim.aktuelUrunler_parse()
-bim.aktuelUrun_parse('http://www.bim.com.tr/aktuel-urunler/blender-set/kral.aspx')
-
-for i in bim.aktuelUrun_random(15):
-    print(i)
+            
