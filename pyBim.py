@@ -10,15 +10,16 @@ class pyBim:
         self.bim_base = 'http://www.bim.com.tr'
         self.aktuel_base = self.bim_base+'/Categories/100/aktuel-urunler.aspx'
         self.keylink = self.aktuel_base+'?Bim_AktuelTarihKey='
+        self.aktuel_urun = self.bim_base+'/aktuel-urunler/'
         self.nothing = ''
         
-    def aktuel_date(self,date='this_week'):
+    def aktuelUrunler_date(self,date='this_week'):
         if date is 'last_week' or date is 'this_week' or date is 'next_week':
             self.date = date
         else:
             raise Exception('Bimodule.aktuel()\'s date can take only 3 diffrent params. \n Param 1: this_week (or leave empty) \n Param 2: next_week \n Param 3: last_week')
             
-    def get_aktuel(self):
+    def aktuelUrunler_get(self):
         keys = []
         hrefs = []
         urls = {}
@@ -44,9 +45,24 @@ class pyBim:
             self.url = self.keylink+urls['next_week']
         else:
             raise Exception('Unknown Date Format.')
-
+    
+    def aktuelUrunler_parse(self):
+        fullitem = []
+        slugitem = []
+        raw_data = get(self.url)
+        regex = r"\"\/aktuel-urunler\/(.*?)\/(.*?)\"><"
+        matches = re.finditer(regex, raw_data.text)
+        for matchNum, match in enumerate(matches):
+            matchNum = matchNum + 1
+            slugitem.append(match.group(1))
+            fullitem.append(self.aktuel_urun+match.group(1)+'/'+match.group(2))
+        self.total_item = matchNum
+        self.slugitem = slugitem
+        self.fullitem = fullitem
+        
 bim = pyBim()
-bim.aktuel_date('next_week')
-bim.get_aktuel()
-print(bim.url)
+bim.aktuelUrunler_date('next_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrunler_parse()
+print(bim.fullitem)
 
