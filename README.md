@@ -135,3 +135,17 @@ Result:
 ```shell
 ['http://www.bim.com.tr/aktuel-urunler/toblerone-360-g/kral.aspx', 'http://www.bim.com.tr/aktuel-urunler/sutlu-findikli-cikolata-nestle-70-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/bademli-beyaz-cikolata-nestle-70-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/karisik-kurabiye-cesitleri-lambertz-235-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/tam-tahilli-kahvaltilik-biskuvi-hellema-253-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/oreo-228-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/hindistan-cevizli-sutlu-cikolata-kaplamali-biskuvi-hellema-175-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/sutlu-kakao-kremali-gofret-wafer-master-500-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/mini-kekler-kuchenmeister/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/elma-dolgulu-kurabiye-new-yorkers-200-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/findik-aromali-kakaolu-dolgulu-waffle-136-g/aktuel.aspx', 'http://www.bim.com.tr/aktuel-urunler/dolgulu-sert-seker-olips-3-lu-paket/aktuel.aspx']
 ```
+
+### Parsing Specific Product with All Info  from URL
+In aktuelUrun_parse function we must send a url for parsing product data 
+```python
+bim = pyBim()
+bim.aktuelUrunler_date('this_week')
+bim.aktuelUrunler_get()
+bim.aktuelUrun_parse(bim.aktuelUrunler_parse()[2][1]) #Send Full URL of product
+```
+
+Result:
+```shell
+{'price': '3,50', 'name': 'Sütlü Fındıklı  Çikolata  Nestle 70 g', 'img': 'http://www.bim.com.tr/Uploads/aktuel-urunler/292_buyuk_330x280_NESTLE FINDIK.png', 'desc': '\xa0%25 fındıklı\n'}
+```
