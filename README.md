@@ -1,5 +1,5 @@
 # PyBim
-![PyBim Logo](https://i.hizliresim.com/RO5WqZ.png)
+![PyBim Logo](https://i.hizliresim.com/4GNGzQ.png)
 
 *Bim Aktuel Module for Python*
 
