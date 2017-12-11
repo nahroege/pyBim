@@ -1,9 +1,9 @@
-# PyBim
 ![PyBim Logo](https://i.hizliresim.com/4GNGzQ.png)
 
+# pyBim
 *Bim Aktuel Module for Python*
 
-## Usage
+## Docs / Examples
 
 ### Importing
 
