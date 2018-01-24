@@ -1,4 +1,4 @@
-![PyBim Logo](https://i.hizliresim.com/4GNGzQ.png)
+![PyBim Logo](https://media.discordapp.net/attachments/326420797721673729/399580454228983808/68747470733a2f2f692e68697a6c69726573696d2e636f6d2f34474e477a512e706e67.png)
 
 # pyBim
 *Bim Aktuel Module for Python*
