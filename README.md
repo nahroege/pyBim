@@ -10,13 +10,7 @@
 Complete Import
 
 ```python
-import pyBim
-```
-
-Import Base Functions
-
-```python
-from pyBim import aktuelUrunler_date, aktuelUrunler_get
+from pyBim.pyBim import pyBim
 ```
 
 ### Init
